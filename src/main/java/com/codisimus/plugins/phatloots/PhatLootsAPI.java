@@ -1,9 +1,11 @@
 package com.codisimus.plugins.phatloots;
 
+import com.codisimus.plugins.phatloots.events.ChestOpenEvent;
 import com.codisimus.plugins.phatloots.loot.LootBundle;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -141,6 +143,15 @@ public class PhatLootsAPI {
 
         if (flagToBreak) {
             plChest.breakChest(player, plChest.getResetTime(phatLoots));
+        } else {
+            ChestOpenEvent event = new ChestOpenEvent(plChest,
+                    player.getOpenInventory().getTopInventory(),
+                    player);
+            if (event.getInventory().getType() == InventoryType.PLAYER)
+                return true;
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled())
+                player.closeInventory();
         }
         return true;
     }
