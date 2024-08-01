@@ -9,7 +9,7 @@ plugins {
 val supportedVersions = listOf("1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6", "1.21")
 
 group = "com.codisimus.plugins"
-version = "5.6.4"
+version = "5.6.5"
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
