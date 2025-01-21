@@ -627,8 +627,11 @@ public class PhatLootChest {
     public long getResetTime(Collection<PhatLoot> phatLoots) {
         long time = -1;
         for (PhatLoot phatLoot : phatLoots) {
-            //Check if this is a linked PhatLoot
-            if (phatLoot.containsChest(this) && phatLoot.breakAndRespawn) {
+            // check for auto-linked chests
+            boolean isExplicitlyLinked = phatLoot.containsChest(this);
+            boolean isAutoLinked = PhatLoots.getAutoLinkedPhatLoots(getBlock()).contains(phatLoot);
+
+            if ((isExplicitlyLinked || isAutoLinked) && phatLoot.breakAndRespawn) {
                 if (phatLoot.global) {
                     long temp = phatLoot.getTimeRemaining(this);
                     if (temp < 1) {
@@ -642,8 +645,7 @@ public class PhatLootChest {
                 }
             }
         }
-        //Convert the time from milliseconds to ticks
-        return time / 50;
+        return time / 50; // Convert to ticks
     }
 
     /**
